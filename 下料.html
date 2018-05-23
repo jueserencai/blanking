@@ -10376,7 +10376,7 @@ return jQuery;
 		position: relative;
 		background: #EFF2F4;
 	}
-	/*右侧悬浮菜单*/
+	/*左侧悬浮菜单*/
 	.slide{
 		width: 3cm;
 		position: fixed;
@@ -10393,7 +10393,7 @@ return jQuery;
 </head>
 <body style="margin-left:3cm;">
 
-<!--右侧悬浮菜单-->
+<!--左侧悬浮菜单-->
 <div id="menu" class="slide">
 	<ul class="">
 		<li class="" title=""><a href="#circlePart" class="smooth">圆等分</a></li>
@@ -10403,8 +10403,8 @@ return jQuery;
 		<li class="" title=""><a href="#stair" class="smooth">楼梯</a></li>
 		<li class="" title=""><a href="#circularCone" class="smooth">圆台侧面</a></li>
 		<li class="" title=""><a href="#radianLength" class="smooth">梁弧长</a></li>
-		<li class="" title="">
-			<a href="#corner" class="smooth">转角拼接</a>
+		<li class="" title=""><a href="#corner" class="smooth">转角拼接</a>
+		<li class="" title=""><a href="#intersectingLine" class="smooth">三通相贯线</a>
 		</li>
 	</ul>
 </div>
@@ -10550,14 +10550,28 @@ return jQuery;
 	</p>
 	<button style="margin-right: 1cm;" onclick="clearll('corner', 5)">清除</button>
 	<button id="cornerCompute">=</button>
-	<p>描点底部间隔距离(米):</p>
-	<p><input type="" name="sketchLength">
-	</p>
-	<p>单片描点高度(米):</p>
+	<p>单片描点距离(米):</p>
 	<p><textarea name="sketchH" cols="30" rows="10"></textarea></p>
-	<p>通体描点高度(米):</p>
+	<p>通体描点距离(米):</p>
 	<p><textarea name="allSketchH" cols="30" rows="10"></textarea>
 	</p>
+</div>
+
+<div style="margin-top:2cm;"></div>
+<div id="intersectingLine">
+	<h2>三通相贯线</h2>
+	<p>切割圆柱直径(米):</p>
+	<p><input type="" name="D1"></p>
+	<p>对接圆柱直径(米):</p>
+	<p><input type="" name="D2"></p>
+	<p>对接深度(米):</p>
+	<p><input type="" name="H"></p>
+	<p>描点数量:</p>
+	<p><input type="" name="n"></p>
+	<button style="margin-right: 1cm;" onclick="clearll('intersectingLine', 4)">清除</button>
+	<button id="intersectingLineCompute">=</button>
+	<p>中线到描点弧线距离(米):</p>
+	<p><textarea name="allSketchLength" cols="30" rows="10"></textarea>
 </div>
 
 <script>
@@ -10712,7 +10726,6 @@ $(function(){
 		var D = div.find("input[name='D']");
 		var pinN = div.find("input[name='pinN']");
 		var qieN = div.find("input[name='qieN']");
-		var sketchLength = div.find("input[name='sketchLength']");
 		var sketchH = div.find("textarea[name='sketchH']");
 		var allSketchH = div.find("textarea[name='allSketchH']");
 		
@@ -10727,14 +10740,14 @@ $(function(){
 		var lowerBase = (R+D.val()/2)*Math.tan(angle1);
 		var H = (upperBase+lowerBase)/2;
 		var intervalAngle = Math.PI*2 / qieN.val();
-		var res1 = "";
-		var res2 = "";
+		var res1 = "序号 -> <弧线等分累加>: 描点距离\n";
+		var res2 = "序号 -> <弧线等分累加>: 描点距离\n\n";
 		var x1 = x2 = temp= 0;
 		for (let xita = 0, i=1; xita <= Math.PI*2+1e-6; xita+=intervalAngle, i++) {
 			x2 = D.val() / 2 * Math.tan(angle1) * Math.cos(xita) + H;
 			x1 = D.val() / 2 * Math.tan(Math.PI*2-angle1) * Math.cos(xita) + H;
-			res1 += i.toString() + "-> " + x2.toFixed(decimal).toString() + "\n";
-			res2 += i.toString() + "-> " + x2.toFixed(decimal).toString() + ",  ";
+			res1 += i.toString() + "-> <" + (xita * D.val() / 2).toFixed(decimal).toString() + ">: " + x2.toFixed(decimal).toString() + "\n";
+			res2 += i.toString() + "-> <" + (xita*D.val()/2).toFixed(decimal).toString() + ">: " + x2.toFixed(decimal).toString() + ",  ";
 			temp = x2;
 			for (let index = 0; index < pinN.val()-2; index++) {
 				if (index%2==0) {
@@ -10746,9 +10759,29 @@ $(function(){
 			}
 			res2 += (temp+(Number(pinN.val())%2==0? x1: x2)).toFixed(decimal).toString() + "\n\n";
 		}
-		sketchLength.val((Math.PI*D.val()/qieN.val()).toFixed(decimal));
 		sketchH.val(res1);
 		allSketchH.val(res2);
+	});
+
+	$("#intersectingLineCompute").bind("click", function () {
+		var div = $("#intersectingLine");
+		var D1 = div.find("input[name='D1']");
+		var D2 = div.find("input[name='D2']");
+		var H = div.find("input[name='H']");
+		var n = div.find("input[name='n']");
+		var allSketchLength = div.find("textarea[name='allSketchLength']");
+
+		var decimal = 4;
+		var intervalHNumber = H.val() / n.val();
+		var res = "序号 -> <对接深度>: 描点弧线距离\n";
+		const init = D2.val() / 2 - Number(H.val());
+		for (let index = 1, accH = intervalHNumber; index < Number(n.val()); index++, accH += intervalHNumber) {
+			let x = Math.sqrt(Math.pow((D2.val()/2), 2) - Math.pow((init+accH), 2));
+			let theta = Math.acos(x / (D1.val()/2));
+			res += index.toString() + "-> <" + accH.toFixed(decimal).toString() + ">: " + (theta*D1.val()/2).toFixed(decimal).toString() + "\n";
+		}
+		res += n.val() + "-> <" + Number(H.val()).toFixed(decimal).toString() + ">: " + (Math.PI*D1.val() / 4).toFixed(decimal).toString() + "\n";
+		allSketchLength.val(res);
 	});
 
 	$(".smooth").click(function(){
