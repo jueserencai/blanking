@@ -10562,10 +10562,11 @@ return jQuery;
 	<h2>三通相贯线</h2>
 	<p>切割圆柱直径(米):</p>
 	<p><input type="" name="D1"></p>
+	<p>切割圆柱厚度(米):</p>
+	<p><input type="" name="thickness"></p>
 	<p>对接圆柱直径(米):</p>
 	<p><input type="" name="D2"></p>
-	<p>对接深度(米):</p>
-	<p><input type="" name="H"></p>
+
 	<p>描点数量:</p>
 	<p><input type="" name="n"></p>
 	<button style="margin-right: 1cm;" onclick="clearll('intersectingLine', 4)">清除</button>
@@ -10767,20 +10768,24 @@ $(function(){
 		var div = $("#intersectingLine");
 		var D1 = div.find("input[name='D1']");
 		var D2 = div.find("input[name='D2']");
-		var H = div.find("input[name='H']");
+		var thickness = div.find("input[name='thickness']");
 		var n = div.find("input[name='n']");
 		var allSketchLength = div.find("textarea[name='allSketchLength']");
 
 		var decimal = 4;
-		var intervalHNumber = H.val() / n.val();
-		var res = "序号 -> <对接深度>: 描点弧线距离\n";
-		const init = D2.val() / 2 - Number(H.val());
+		var H = D2.val()/2 - Math.sqrt(Math.pow(D2.val()/2, 2) - Math.pow(D1.val()/2, 2));
+		var intervalHNumber = H / n.val();
+		var res = "序号-> <对接深度>: 描点弧线距离\n";
+		var x = D1.val()/2 - thickness.val();
+		var theta = Math.acos(x / (D1.val() / 2));
+		res += "0-> <" + (0).toFixed(decimal).toString() + ">: " + (theta * D1.val() / 2).toFixed(decimal).toString() + "\n";
+		const init = D2.val() / 2 - H;
 		for (let index = 1, accH = intervalHNumber; index < Number(n.val()); index++, accH += intervalHNumber) {
 			let x = Math.sqrt(Math.pow((D2.val()/2), 2) - Math.pow((init+accH), 2));
 			let theta = Math.acos(x / (D1.val()/2));
 			res += index.toString() + "-> <" + accH.toFixed(decimal).toString() + ">: " + (theta*D1.val()/2).toFixed(decimal).toString() + "\n";
 		}
-		res += n.val() + "-> <" + Number(H.val()).toFixed(decimal).toString() + ">: " + (Math.PI*D1.val() / 4).toFixed(decimal).toString() + "\n";
+		res += n.val() + "-> <" + H.toFixed(decimal).toString() + ">: " + (Math.PI*D1.val() / 4).toFixed(decimal).toString() + "\n";
 		allSketchLength.val(res);
 	});
 
