@@ -10897,7 +10897,7 @@
 
 				var decimal = 4;
 				var obliqueAngle = obliqueAngleInput.val() == "" ? 0: Number(obliqueAngleInput.val())/180*Math.PI;
-				var D1Inner = D1.val() - D1Thickness.val()*0.001*2; // D1内壁圆周直径
+				var D1Inner = D1.val() - Number(D1Thickness.val())*0.001*2; // D1内壁圆周直径
 				var L = D1Inner/2 * Math.sin(obliqueAngle);
 				console.log(L);
 				var res = "序号-> <圆周等分累加>: 描点距离\n";
