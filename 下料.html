@@ -10663,6 +10663,10 @@
 		<p>
 			<input type="" name="D1">
 		</p>
+		<p>切割圆柱厚度(毫米):</p>
+		<p>
+			<input type="" name="D1Thickness">
+		</p>
 		<p>对接圆柱直径(米):</p>
 		<p>
 			<input type="" name="D2">
@@ -10851,8 +10855,18 @@
 				for (let xita = 0, i = 1; xita <= Math.PI * 2 + 1e-6; xita += intervalAngle, i++) {
 					x2 = D.val() / 2 * Math.tan(angle1) * Math.cos(xita) + H;
 					x1 = D.val() / 2 * Math.tan(Math.PI * 2 - angle1) * Math.cos(xita) + H;
-					res1 += i.toString() + "-> <" + (xita * D.val() / 2).toFixed(decimal).toString() + ">: " + x2.toFixed(decimal).toString() + "\n";
-					res2 += i.toString() + "-> <" + (xita * D.val() / 2).toFixed(decimal).toString() + ">: " + x2.toFixed(decimal).toString() + ",  ";
+					res1 += i.toString() 
+						+ "-> <" 
+						+ (xita * D.val() / 2).toFixed(decimal).toString() 
+						+ ">: " 
+						+ x2.toFixed(decimal).toString() 
+						+ "\n";
+					res2 += i.toString() 
+						+ "-> <" 
+						+ (xita * D.val() / 2).toFixed(decimal).toString() 
+						+ ">: " 
+						+ x2.toFixed(decimal).toString() 
+						+ ",  ";
 					temp = x2;
 					for (let index = 0; index < pinN.val() - 2; index++) {
 						if (index % 2 == 0) {
@@ -10871,16 +10885,23 @@
 			$("#intersectingLineCompute").bind("click", function () {
 				var div = $("#intersectingLine");
 				var D1 = div.find("input[name='D1']");
+				var D1Thickness = div.find("input[name='D1Thickness']");
 				var D2 = div.find("input[name='D2']");
 				var n = div.find("input[name='n']");
 				var allSketchLength = div.find("textarea[name='allSketchLength']");
 
 				var decimal = 4;
+				var D1Inner = D1.val() - D1Thickness.val()*0.001*2; // D1内壁圆周直径
 				var res = "序号-> <圆周等分累加>: 描点距离\n";
 				for (let index = 0, accTheta = Math.PI / 2; index <= Number(n.val()); index++ , accTheta += Math.PI * 2 / n.val()) {
-					let x = Math.abs(D1.val() / 2 * Math.sin(accTheta));
+					let x = Math.abs(D1Inner / 2 * Math.sin(accTheta));
 					let sketchLength = D2.val() / 2 - Math.sqrt(Math.pow(D2.val() / 2, 2) - Math.pow(x, 2));
-					res += index.toString() + "-> <" + ((accTheta - Math.PI / 2) * D1.val() / 2).toFixed(decimal).toString() + ">: " + sketchLength.toFixed(decimal).toString() + "\n";
+					res += index.toString() 
+						+ "-> <" 
+						+ ((accTheta - Math.PI / 2) * D1Inner / 2).toFixed(decimal).toString() 
+						+ ">: " 
+						+ sketchLength.toFixed(decimal).toString() 
+						+ "\n";
 				}
 				allSketchLength.val(res);
 			});
