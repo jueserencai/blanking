@@ -10671,6 +10671,10 @@
 		<p>
 			<input type="" name="D2">
 		</p>
+		<p>对接倾斜角度(°):</p>
+		<p>
+			<input type="" name="obliqueAngle">
+		</p>
 
 		<p>描点数量:</p>
 		<p>
@@ -10888,14 +10892,23 @@
 				var D1Thickness = div.find("input[name='D1Thickness']");
 				var D2 = div.find("input[name='D2']");
 				var n = div.find("input[name='n']");
+				var obliqueAngleInput = div.find("input[name='obliqueAngle']");
 				var allSketchLength = div.find("textarea[name='allSketchLength']");
 
 				var decimal = 4;
+				var obliqueAngle = obliqueAngleInput.val() == "" ? 0: Number(obliqueAngleInput.val())/180*Math.PI;
 				var D1Inner = D1.val() - D1Thickness.val()*0.001*2; // D1内壁圆周直径
+				var L = D1Inner/2 * Math.sin(obliqueAngle);
+				console.log(L);
 				var res = "序号-> <圆周等分累加>: 描点距离\n";
 				for (let index = 0, accTheta = Math.PI / 2; index <= Number(n.val()); index++ , accTheta += Math.PI * 2 / n.val()) {
-					let x = Math.abs(D1Inner / 2 * Math.sin(accTheta));
-					let sketchLength = D2.val() / 2 - Math.sqrt(Math.pow(D2.val() / 2, 2) - Math.pow(x, 2));
+					let rsin = D1Inner / 2 * Math.sin(accTheta);
+					let rcos = D1Inner / 2 * Math.cos(accTheta);
+					let sketchLength = 
+						(D2.val()/2 - Math.sqrt(Math.pow(D2.val()/2, 2) - Math.pow(rsin, 2)))
+						/ Math.cos(obliqueAngle)
+						+ (L/Math.cos(obliqueAngle) 
+							- D1Inner/2*rcos*Math.tan(obliqueAngle));
 					res += index.toString() 
 						+ "-> <" 
 						+ ((accTheta - Math.PI / 2) * D1Inner / 2).toFixed(decimal).toString() 
