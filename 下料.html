@@ -10896,24 +10896,29 @@
 				var allSketchLength = div.find("textarea[name='allSketchLength']");
 
 				var decimal = 4;
-				var obliqueAngle = obliqueAngleInput.val() == "" ? 0: Number(obliqueAngleInput.val())/180*Math.PI;
+				const obliqueAngle = obliqueAngleInput.val() == "" ? 0: Number(obliqueAngleInput.val())/180*Math.PI;
 				var D1Inner = D1.val() - Number(D1Thickness.val())*0.001*2; // D1内壁圆周直径
 				var L = D1Inner/2 * Math.sin(obliqueAngle);
-				console.log(L);
-				var res = "序号-> <圆周等分累加>: 描点距离\n";
-				for (let index = 0, accTheta = Math.PI / 2; index <= Number(n.val()); index++ , accTheta += Math.PI * 2 / n.val()) {
-					let rsin = D1Inner / 2 * Math.sin(accTheta);
-					let rcos = D1Inner / 2 * Math.cos(accTheta);
+				var sketchLengthArr = [];
+				var maxLength = 0;
+				const internalTheta = Math.PI * 2 / n.val();
+				for (let index = 0; index <= Number(n.val()); index++) {
+					let accTheta = internalTheta * index;
 					let sketchLength = 
-						(D2.val()/2 - Math.sqrt(Math.pow(D2.val()/2, 2) - Math.pow(rsin, 2)))
+						(D2.val()/2 - Math.sqrt(Math.pow(D2.val()/2, 2) - Math.pow(D1Inner/2*Math.sin(accTheta), 2)))
 						/ Math.cos(obliqueAngle)
 						+ (L/Math.cos(obliqueAngle) 
-							- D1Inner/2*rcos*Math.tan(obliqueAngle));
-					res += index.toString() 
-						+ "-> <" 
-						+ ((accTheta - Math.PI / 2) * Number(D1.val()) / 2).toFixed(decimal).toString() 
-						+ ">: " 
-						+ sketchLength.toFixed(decimal).toString() 
+							- D1Inner/2*Math.cos(accTheta)*Math.tan(obliqueAngle));
+					maxLength = Math.max(maxLength, sketchLength);
+					sketchLengthArr.push(sketchLength);
+				}
+				var res = "序号-> <圆周等分累加>: 描点距离\n";
+				for (let index = 0; index < sketchLengthArr.length; index++) {
+					res += index.toString()
+						+ "-> <"
+						+ ((internalTheta*index) * Number(D1.val()) / 2).toFixed(decimal).toString()
+						+ ">: "
+						+ (maxLength-sketchLengthArr[index]).toFixed(decimal).toString()
 						+ "\n";
 				}
 				allSketchLength.val(res);
