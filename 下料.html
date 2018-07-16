@@ -10425,9 +10425,13 @@
 			</li>
 			<li class="" title="">
 				<a href="#corner" class="smooth">转角拼接</a>
-				<li class="" title="">
-					<a href="#intersectingLine" class="smooth">三通相贯线</a>
-				</li>
+			</li>
+			<li class="" title="">
+				<a href="#snakeCorner" class="smooth">蛇形转角拼接</a>
+			</li>
+			<li class="" title="">
+				<a href="#intersectingLine" class="smooth">三通相贯线</a>
+			</li>
 		</ul>
 	</div>
 
@@ -10652,7 +10656,38 @@
 		</p>
 		<p>通体描点高度(米):</p>
 		<p>
-			<textarea name="allSketchH" cols="30" rows="10"></textarea>
+			<textarea name="allSketchH" cols="30" rows="20"></textarea>
+		</p>
+	</div>
+
+	<div style="margin-top:2cm;"></div>
+	<div id="snakeCorner">
+		<h2>蛇形转角拼接</h2>
+		<p>圆柱直径(米)</p>
+		<p>
+			<input type="" name="D">
+		</p>
+		<p>宽度(米)</p>
+		<p>
+			<input type="" name="width">
+		</p>
+		<p>高度(米), 两圆柱下边距离</p>
+		<p>
+			<input type="" name="height">
+		</p>
+		<p>转角拼接份数:</p>
+		<p>
+			<input type="" name="pinN">
+		</p>
+		<p>切割轨迹等分描点数量:</p>
+		<p>
+			<input type="" name="qieN">
+		</p>
+		<button style="margin-right: 1cm;" onclick="clearll('snakeCorner', 5)">清除</button>
+		<button id="snakeCornerCompute">=</button>
+		<p>通体描点高度(米):</p>
+		<p>
+			<textarea name="allSketchH" cols="30" rows="20"></textarea>
 		</p>
 	</div>
 
@@ -10684,7 +10719,7 @@
 		<button id="intersectingLineCompute">=</button>
 		<p>描点距离(米):</p>
 		<p>
-			<textarea name="allSketchLength" cols="30" rows="10"></textarea>
+			<textarea name="allSketchLength" cols="30" rows="20"></textarea>
 	</div>
 
 	<script>
@@ -10859,17 +10894,17 @@
 				for (let xita = 0, i = 1; xita <= Math.PI * 2 + 1e-6; xita += intervalAngle, i++) {
 					x2 = D.val() / 2 * Math.tan(angle1) * Math.cos(xita) + H;
 					x1 = D.val() / 2 * Math.tan(Math.PI * 2 - angle1) * Math.cos(xita) + H;
-					res1 += i.toString() 
-						+ "-> <" 
-						+ (xita * D.val() / 2).toFixed(decimal).toString() 
-						+ ">: " 
-						+ x2.toFixed(decimal).toString() 
+					res1 += i.toString()
+						+ "-> <"
+						+ (xita * D.val() / 2).toFixed(decimal).toString()
+						+ ">: "
+						+ x2.toFixed(decimal).toString()
 						+ "\n";
-					res2 += i.toString() 
-						+ "-> <" 
-						+ (xita * D.val() / 2).toFixed(decimal).toString() 
-						+ ">: " 
-						+ x2.toFixed(decimal).toString() 
+					res2 += i.toString()
+						+ "-> <"
+						+ (xita * D.val() / 2).toFixed(decimal).toString()
+						+ ">: "
+						+ x2.toFixed(decimal).toString()
 						+ ",  ";
 					temp = x2;
 					for (let index = 0; index < pinN.val() - 2; index++) {
@@ -10886,6 +10921,50 @@
 				allSketchH.val(res2);
 			});
 
+			$("#snakeCornerCompute").bind("click", function () {
+				var div = $("#snakeCorner");
+				var D = Number(div.find("input[name='D']").val());
+				var width = Number(div.find("input[name='width']").val());
+				var height = Number(div.find("input[name='height']").val()) + D;
+				var pinN = Number(div.find("input[name='pinN']").val());
+				var qieN = Number(div.find("input[name='qieN']").val());
+				var allSketchH = div.find("textarea[name='allSketchH']");
+
+				function getOnePinPointHeight(InnerR, D, angle, pinN, qieN) {
+					let angle1 = angle / (pinN - 1) / 2 / 180 * Math.PI;
+					let H = (InnerR * Math.tan(angle1) + (InnerR + D) * Math.tan(angle1)) / 2;
+					ret = [];
+					for (let theta = 0, intervalAngle = Math.PI * 2 / qieN; theta <= Math.PI * 2 + 1e-6; theta += intervalAngle) {
+						ret.push(D / 2 * Math.tan(angle1) * Math.cos(theta) + H);
+					}
+					return ret;
+				}
+
+				var decimal = 4;
+				res = "序号 -> <弧线等分累加>: 描点距离\n\n";
+				let halfPinN = Math.ceil(pinN / 2);
+				let angle = Math.atan(width / height) / Math.PI * 180;
+				angle = angle * (halfPinN * 2) / (halfPinN * 2 - 1);
+				let onePinHeight = getOnePinPointHeight(height - D, D, angle, halfPinN + 1, qieN);
+				for (let index = 0, halfQieN = qieN / 2, cylinderCirculrAcc = 0, cylinderCirculrInterval = D * Math.PI / qieN;
+					index < onePinHeight.length;
+					index++ , cylinderCirculrAcc += cylinderCirculrInterval) {
+					res += `${index} -> <${cylinderCirculrAcc.toFixed(decimal)}>: `;
+					let x1 = onePinHeight[index] * 2;
+					let x2 = onePinHeight[(index + halfQieN) % qieN] * 2;
+					let acc = x1 / 2;
+					res += `${acc.toFixed(decimal)}`;
+					for (let i = 0; i < pinN - 2; ++i) {
+						if (i % 2 == 0) acc += x2;
+						else acc += x1;
+						res += `,  ${acc.toFixed(decimal)}`;
+					}
+					acc += x2 / 2;
+					res += `,  ${acc.toFixed(decimal)}\n\n`;
+				}
+				allSketchH.val(res);
+			});
+
 			$("#intersectingLineCompute").bind("click", function () {
 				var div = $("#intersectingLine");
 				var D1 = div.find("input[name='D1']");
@@ -10896,19 +10975,19 @@
 				var allSketchLength = div.find("textarea[name='allSketchLength']");
 
 				var decimal = 4;
-				const obliqueAngle = obliqueAngleInput.val() == "" ? 0: Number(obliqueAngleInput.val())/180*Math.PI;
-				var D1Inner = D1.val() - Number(D1Thickness.val())*0.001*2; // D1内壁圆周直径
-				var L = D1Inner/2 * Math.sin(obliqueAngle);
+				const obliqueAngle = obliqueAngleInput.val() == "" ? 0 : Number(obliqueAngleInput.val()) / 180 * Math.PI;
+				var D1Inner = D1.val() - Number(D1Thickness.val()) * 0.001 * 2; // D1内壁圆周直径
+				var L = D1Inner / 2 * Math.sin(obliqueAngle);
 				var sketchLengthArr = [];
 				var maxLength = 0;
 				const internalTheta = Math.PI * 2 / n.val();
 				for (let index = 0; index <= Number(n.val()); index++) {
 					let accTheta = internalTheta * index;
-					let sketchLength = 
-						(D2.val()/2 - Math.sqrt(Math.pow(D2.val()/2, 2) - Math.pow(D1Inner/2*Math.sin(accTheta), 2)))
+					let sketchLength =
+						(D2.val() / 2 - Math.sqrt(Math.pow(D2.val() / 2, 2) - Math.pow(D1Inner / 2 * Math.sin(accTheta), 2)))
 						/ Math.cos(obliqueAngle)
-						+ (L/Math.cos(obliqueAngle) 
-							- D1Inner/2*Math.cos(accTheta)*Math.tan(obliqueAngle));
+						+ (L / Math.cos(obliqueAngle)
+							- D1Inner / 2 * Math.cos(accTheta) * Math.tan(obliqueAngle));
 					maxLength = Math.max(maxLength, sketchLength);
 					sketchLengthArr.push(sketchLength);
 				}
@@ -10916,9 +10995,9 @@
 				for (let index = 0; index < sketchLengthArr.length; index++) {
 					res += index.toString()
 						+ "-> <"
-						+ ((internalTheta*index) * Number(D1.val()) / 2).toFixed(decimal).toString()
+						+ ((internalTheta * index) * Number(D1.val()) / 2).toFixed(decimal).toString()
 						+ ">: "
-						+ (maxLength-sketchLengthArr[index]).toFixed(decimal).toString()
+						+ (maxLength - sketchLengthArr[index]).toFixed(decimal).toString()
 						+ "\n";
 				}
 				allSketchLength.val(res);
