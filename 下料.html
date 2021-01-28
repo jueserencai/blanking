@@ -10403,6 +10403,9 @@
 	<div id="menu" class="slide">
 		<ul class="">
 			<li class="" title="">
+				<a href="#calculator" class="smooth" style="color:#e7193c">计算器</a>
+			</li>
+			<li class="" title="">
 				<a href="#circlePart" class="smooth">圆等分</a>
 			</li>
 			<li class="" title="">
@@ -10414,9 +10417,9 @@
 			<li class="" title="">
 				<a href="#side" class="smooth">槽钢切割长度</a>
 			</li>
-			<li class="" title="">
+			<!-- <li class="" title="">
 				<a href="#stair" class="smooth">楼梯</a>
-			</li>
+			</li> -->
 			<li class="" title="">
 				<a href="#circularCone" class="smooth">圆台侧面</a>
 			</li>
@@ -10437,6 +10440,22 @@
 		</ul>
 	</div>
 
+	<div id="calculator">
+		<h2>计算器</h2>
+		<p>输入:</p>
+		<p>
+			<textarea name="input" cols="30" rows="2"></textarea>
+		</p>
+		<button style="margin-right: 1cm;" onclick="clearAll('calculator', 1)">清除</button>
+		<button id="calculatorCompute" style="margin-right: 1cm;">=</button>
+		<button id="calculatorCopyResult">复制结果</button>
+		<p>结果:</p>
+		<p>
+			<textarea name="result" cols="30" rows="10"></textarea>
+		</p>
+	</div>
+
+	<div style="margin-top:2cm;"></div>
 	<div id="circlePart">
 		<h2>圆等分</h2>
 		<p>圆直径(米):</p>
@@ -10448,7 +10467,7 @@
 			<input type="" name="divide">
 		</p>
 		<p>
-			<button style="margin-right: 1cm;" onclick="clearll('circlePart', 2)">清除</button>
+			<button style="margin-right: 1cm;" onclick="clearAll('circlePart', 2)">清除</button>
 			<button id="circlePartCompute">=</button>
 		</p>
 		<p>割线长(米):</p>
@@ -10468,7 +10487,7 @@
 		<p>
 			<input type="" name="n">
 		</p>
-		<button style="margin-right: 1cm;" onclick="clearll('partAcc', 2)">清除</button>
+		<button style="margin-right: 1cm;" onclick="clearAll('partAcc', 2)">清除</button>
 		<button id="partAccCompute">=</button>
 		<p>累加高度(米):</p>
 		<p>
@@ -10495,7 +10514,7 @@
 		<p>
 			<input type="" name="degree">
 		</p>
-		<button style="margin-right: 1cm;" onclick="clearll('degree', 4)">清除</button>
+		<button style="margin-right: 1cm;" onclick="clearAll('degree', 4)">清除</button>
 		<button id="degreeCompute">=</button>
 	</div>
 	<div style="margin-top:2cm;"></div>
@@ -10514,7 +10533,7 @@
 			<input type="" name="w">
 		</p>
 		<p>
-			<button style="margin-right: 1cm;" onclick="clearll('side', 3)">清除</button>
+			<button style="margin-right: 1cm;" onclick="clearAll('side', 3)">清除</button>
 			<button id="sideCompute">=</button>
 		</p>
 		<p>斜边(米):</p>
@@ -10530,6 +10549,7 @@
 			<input type="" name="bottom">
 		</p>
 	</div>
+<!-- 	
 	<div style="margin-top:2cm;"></div>
 	<div id="stair">
 		<h2>楼梯</h2>
@@ -10550,7 +10570,7 @@
 			<input type="" name="n2">
 		</p>
 		<p>
-			<button style="margin-right: 1cm;" onclick="clearll('stair', 4)">清除</button>
+			<button style="margin-right: 1cm;" onclick="clearAll('stair', 4)">清除</button>
 			<button id="stairCompute">=</button>
 		</p>
 		<p>每一抬 宽度(毫米):</p>
@@ -10561,7 +10581,7 @@
 		<p>
 			<input type="" name="h">
 		</p>
-	</div>
+	</div> -->
 
 	<div style="margin-top:2cm;"></div>
 	<div id="circularCone">
@@ -10578,7 +10598,7 @@
 		<p>
 			<input type="" name="h">
 		</p>
-		<button style="margin-right: 1cm;" onclick="clearll('circularCone', 3)">清除</button>
+		<button style="margin-right: 1cm;" onclick="clearAll('circularCone', 3)">清除</button>
 		<button id="circularConeCompute">=</button>
 
 		<p>从顶点到上底面距离(米):</p>
@@ -10619,7 +10639,7 @@
 		<p>
 			<input type="" name="h">
 		</p>
-		<button style="margin-right: 1cm;" onclick="clearll('radianLength', 2)">清除</button>
+		<button style="margin-right: 1cm;" onclick="clearAll('radianLength', 2)">清除</button>
 		<button id="radianLengthCompute">=</button>
 		<p>梁弧长(米):</p>
 		<p>
@@ -10642,7 +10662,7 @@
 		<p>
 			<input type="" name="averageNum">
 		</p>
-		<button style="margin-right: 1cm;" onclick="clearll('beamAverageHeight', 3)">清除</button>
+		<button style="margin-right: 1cm;" onclick="clearAll('beamAverageHeight', 3)">清除</button>
 		<button id="beamAverageHeightCompute">=</button>
 		<p>等分抬高距离(米):</p>
 		<p>
@@ -10673,7 +10693,7 @@
 		<p>
 			<input type="" name="qieN">
 		</p>
-		<button style="margin-right: 1cm;" onclick="clearll('corner', 5)">清除</button>
+		<button style="margin-right: 1cm;" onclick="clearAll('corner', 5)">清除</button>
 		<button id="cornerCompute">=</button>
 		<p>单片描点高度(米):</p>
 		<p>
@@ -10708,7 +10728,7 @@
 		<p>
 			<input type="" name="qieN">
 		</p>
-		<button style="margin-right: 1cm;" onclick="clearll('snakeCorner', 5)">清除</button>
+		<button style="margin-right: 1cm;" onclick="clearAll('snakeCorner', 5)">清除</button>
 		<button id="snakeCornerCompute">=</button>
 		<p>通体描点高度(米):</p>
 		<p>
@@ -10740,7 +10760,7 @@
 		<p>
 			<input type="" name="n">
 		</p>
-		<button style="margin-right: 1cm;" onclick="clearll('intersectingLine', 3)">清除</button>
+		<button style="margin-right: 1cm;" onclick="clearAll('intersectingLine', 3)">清除</button>
 		<button id="intersectingLineCompute">=</button>
 		<p>切割圆描点距离(米):</p>
 		<p>
@@ -10764,9 +10784,15 @@
 	</div>
 
 	<script>
-		function clearll(id, len) {
-			var input = document.getElementById(id).getElementsByTagName('input');
-			for (var i = len - 1; i >= 0; i--) {
+		function clearAll(id, len) {
+			let i=0
+			let input = document.getElementById(id).getElementsByTagName('input');
+			for (; input.length>0 && i<len; i++) {
+				input[i].value = "";
+			}
+
+			input = document.getElementById(id).getElementsByTagName('textarea');
+			for (; input.length>0 && i<len; i++) {
 				input[i].value = "";
 			}
 		}
@@ -11083,9 +11109,58 @@
 				focusToCenterInput.val((e * halfLongAxis).toFixed(decimal).toString())
 			});
 
+			// 计算字符串的运算结果
+			function calculateString(str){
+				return eval(str)
+			} 
+
+			$("#calculatorCompute").bind("click", function () {
+				let div = $("#calculator");
+				let input = div.find("textarea[name='input']");
+				let result = div.find("textarea[name='result']");
+
+				let resString = result.val()
+				// let currentResult= eval(input.val())
+				let currentResult= calculateString(input.val())
+
+				let currentResultString= input.val() + "\n=  " + currentResult.toString()
+
+				resString = currentResultString + "\n\n" + resString
+				result.val(resString);
+			});
+
+			// 复制结果
+			$("#calculatorCopyResult").bind("click", function () {
+				let input = $("#calculator").find("textarea[name='input']");
+				let result= calculateString(input.val());
+				result= result.toFixed(4).toString()
+
+				let flag = copyText(result); //传递文本
+			})
+
+			function copyText(text) {
+				var textarea = document.createElement("input");//创建input对象
+				var currentFocus = document.activeElement;//当前获得焦点的元素
+				document.body.appendChild(textarea);//添加元素
+				textarea.value = text;
+				textarea.focus();
+				if(textarea.setSelectionRange)
+					textarea.setSelectionRange(0, textarea.value.length);//获取光标起始位置到结束位置
+				else
+					textarea.select();
+				try {
+					var flag = document.execCommand("copy");//执行复制
+				} catch(eo) {
+					var flag = false;
+				}
+				document.body.removeChild(textarea);//删除元素
+				currentFocus.focus();
+				return flag;
+			}
+
 			$(".smooth").click(function () {
-				var href = $(this).attr("href");
-				var pos = $(href).offset().top;
+				let href = $(this).attr("href");
+				let pos = $(href).offset().top;
 				$("html,body").animate({ scrollTop: pos }, 1000);
 				return false;
 			});
