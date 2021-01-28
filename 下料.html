@@ -10422,6 +10422,8 @@
 			</li>
 			<li class="" title="">
 				<a href="#radianLength" class="smooth">梁弧长</a>
+			<li class="" title="">
+				<a href="#beamAverageHeight" class="smooth">梁等分抬高</a>
 			</li>
 			<li class="" title="">
 				<a href="#corner" class="smooth">转角拼接</a>
@@ -10626,6 +10628,29 @@
 	</div>
 
 	<div style="margin-top:2cm;"></div>
+	<div id="beamAverageHeight">
+		<h2>梁等分抬高</h2>
+		<p>梁长度一半(米):</p>
+		<p>
+			<input type="" name="a">
+		</p>
+		<p>中心抬高(米):</p>
+		<p>
+			<input type="" name="h">
+		</p>
+		<p>等分数:</p>
+		<p>
+			<input type="" name="averageNum">
+		</p>
+		<button style="margin-right: 1cm;" onclick="clearll('beamAverageHeight', 3)">清除</button>
+		<button id="beamAverageHeightCompute">=</button>
+		<p>等分抬高距离(米):</p>
+		<p>
+			<textarea name="beamAverageHeightResult" cols="30" rows="10"></textarea>
+		</p>
+	</div>
+
+	<div style="margin-top:2cm;"></div>
 	<div id="corner">
 		<h2>转角拼接</h2>
 		<p>转角度数:</p>
@@ -10711,15 +10736,31 @@
 			<input type="" name="obliqueAngle">
 		</p>
 
-		<p>描点数量:</p>
+		<p>切割圆描点数量:</p>
 		<p>
 			<input type="" name="n">
 		</p>
 		<button style="margin-right: 1cm;" onclick="clearll('intersectingLine', 3)">清除</button>
 		<button id="intersectingLineCompute">=</button>
-		<p>描点距离(米):</p>
+		<p>切割圆描点距离(米):</p>
 		<p>
-			<textarea name="allSketchLength" cols="30" rows="20"></textarea>
+			<textarea name="allSketchLength" cols="30" rows="20"></textarea></p>
+		<p>对接圆柱打孔轨迹椭圆的半短轴(米)：</p>
+		<p>
+			<input type="" name="halfShortAxis">
+		</p>
+		<p>
+			对接圆柱打孔轨迹椭圆的半长轴(米)：
+		</p>
+		<p>
+			<input type="" name="halfLongAxis">
+		</p>
+		<p>
+			对接圆柱打孔轨迹椭圆的焦点与中心距离(米)：
+		</p>
+		<p>
+			<input type="" name="focusToCenter">
+		</p>
 	</div>
 
 	<script>
@@ -10867,6 +10908,34 @@
 				rad.val(((x + Number(h.val())) * radian).toFixed(3));
 			});
 
+			$("#beamAverageHeightCompute").bind("click", function () {
+				var div = $("#beamAverageHeight");
+				var a = div.find("input[name='a']");
+				var h = div.find("input[name='h']");
+				var averageNum = div.find("input[name='averageNum']");
+				var beamAverageHeightResult = div.find("textarea[name='beamAverageHeightResult']");
+
+				var r=(Math.pow(a.val(),2) + Math.pow(h.val(),2)) / (2*h.val())
+
+				var decimal = 4;
+				var averageLength = a.val() / averageNum.val();
+				var resString = "序号 -> <等分累加>: 抬高距离\n";
+				for (let i = 0; i <= averageNum.val(); i++) {
+					let lengthFromLeft = i * averageLength;
+					let x = lengthFromLeft - a.val()
+					// let height = h.val() * Math.pow(Math.pow(a.val(), 2) - Math.pow(x, 2), 0.5) / a.val()
+					let height=Math.pow((Math.pow(r,2) - x*x),0.5) - (r-h.val())
+					resString += i.toString()
+						+ "-> <"
+						+ (lengthFromLeft).toFixed(decimal).toString()
+						+ ">: "
+						+ height.toFixed(decimal).toString()
+						+ "\n";
+				}
+
+				beamAverageHeightResult.val(resString);
+			});
+
 			$("#cornerCompute").bind("click", function () {
 				var div = $("#corner");
 				var angle = div.find("input[name='angle']");
@@ -10973,6 +11042,9 @@
 				var n = div.find("input[name='n']");
 				var obliqueAngleInput = div.find("input[name='obliqueAngle']");
 				var allSketchLength = div.find("textarea[name='allSketchLength']");
+				var halfShortAxisInput = div.find("input[name='halfShortAxis']");
+				var halfLongAxisInput = div.find("input[name='halfLongAxis']");
+				var focusToCenterInput = div.find("input[name='focusToCenter']");
 
 				var decimal = 4;
 				const obliqueAngle = obliqueAngleInput.val() == "" ? 0 : Number(obliqueAngleInput.val()) / 180 * Math.PI;
@@ -11001,6 +11073,14 @@
 						+ "\n";
 				}
 				allSketchLength.val(res);
+
+				// 打孔椭圆
+				var theta = Math.asin(D1Inner / D2.val())
+				var halfLongAxis = theta * D2.val() / 2
+				var e = Math.sqrt(1 - Math.pow(D1Inner, 2) / 4 / Math.pow(halfLongAxis, 2))
+				halfShortAxisInput.val(D1Inner / 2)
+				halfLongAxisInput.val(halfLongAxis.toFixed(decimal).toString())
+				focusToCenterInput.val((e * halfLongAxis).toFixed(decimal).toString())
 			});
 
 			$(".smooth").click(function () {
