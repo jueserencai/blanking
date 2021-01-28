@@ -10380,9 +10380,7 @@
 		}
 
 		/*右侧悬浮菜单*/
-
-		.slide {
-			width: 3cm;
+		/* .slide {
 			position: fixed;
 			left: 0;
 			z-index: 999;
@@ -10390,398 +10388,409 @@
 
 		.slide li {
 			margin-bottom: 0.5cm;
+		} */
+
+		
+		#parent{
+			display:flex;
 		}
+		#left{
+			float: left;
+			width: 3cm;
+			left: 0;
+			margin: 0;  
+			margin-left:10px;
+    		padding: 0;
+			/* flex:1; */
+
+			position: fixed;
+			left: 0;
+			z-index: 999;
+		}
+
+		#left ul,
+		#left li {
+			margin-left:0px;
+			margin-bottom: 0.5cm;
+			padding-left:0px;
+		}
+
+		#right{
+			/* flex:2; */
+			margin-left:3cm;
+		}
+
+		input { 
+			font-size: 18px; 
+			font-family: "微软雅黑";
+		}
+		textarea { 
+			font-size: 18px; 
+			font-family: "微软雅黑";
+		}
+
 	</style>
 
 	<meta name="viewport" content="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
 
 </head>
 
-<body style="margin-left:3cm;">
+<body>
+	<div id="parent">
+		<div id="left">
+			<ul class="">
+				<li class="" title="">
+					<a href="#calculator" class="smooth" style="color:#e7193c">计算器</a>
+				</li>
+				<li class="" title="">
+					<a href="#circlePart" class="smooth">圆等分</a>
+				</li>
+				<li class="" title="">
+					<a href="#partAcc" class="smooth">等分累加距离</a>
+				</li>
+				<li class="" title="">
+					<a href="#degree" class="smooth">三角形</a>
+				</li>
+				<li class="" title="">
+					<a href="#side" class="smooth">槽钢切割长度</a>
+				</li>
+				<li class="" title="">
+					<a href="#circularCone" class="smooth">圆台侧面</a>
+				</li>
+				<li class="" title="">
+					<a href="#radianLength" class="smooth">梁弧长</a>
+				<li class="" title="">
+					<a href="#beamAverageHeight" class="smooth">梁等分抬高</a>
+				</li>
+				<li class="" title="">
+					<a href="#corner" class="smooth">转角拼接</a>
+				</li>
+				<li class="" title="">
+					<a href="#snakeCorner" class="smooth">蛇形转角拼接</a>
+				</li>
+				<li class="" title="">
+					<a href="#intersectingLine" class="smooth">三通相贯线</a>
+				</li>
+			</ul>
+		</div>
 
-	<!--右侧悬浮菜单-->
-	<div id="menu" class="slide">
-		<ul class="">
-			<li class="" title="">
-				<a href="#calculator" class="smooth" style="color:#e7193c">计算器</a>
-			</li>
-			<li class="" title="">
-				<a href="#circlePart" class="smooth">圆等分</a>
-			</li>
-			<li class="" title="">
-				<a href="#partAcc" class="smooth">等分累加距离</a>
-			</li>
-			<li class="" title="">
-				<a href="#degree" class="smooth">三角形</a>
-			</li>
-			<li class="" title="">
-				<a href="#side" class="smooth">槽钢切割长度</a>
-			</li>
-			<!-- <li class="" title="">
-				<a href="#stair" class="smooth">楼梯</a>
-			</li> -->
-			<li class="" title="">
-				<a href="#circularCone" class="smooth">圆台侧面</a>
-			</li>
-			<li class="" title="">
-				<a href="#radianLength" class="smooth">梁弧长</a>
-			<li class="" title="">
-				<a href="#beamAverageHeight" class="smooth">梁等分抬高</a>
-			</li>
-			<li class="" title="">
-				<a href="#corner" class="smooth">转角拼接</a>
-			</li>
-			<li class="" title="">
-				<a href="#snakeCorner" class="smooth">蛇形转角拼接</a>
-			</li>
-			<li class="" title="">
-				<a href="#intersectingLine" class="smooth">三通相贯线</a>
-			</li>
-		</ul>
+
+		<div id="right">
+				
+			<div id="calculator">
+				<h2>计算器</h2>
+				<p>输入:</p>
+				<p>
+					<textarea name="input" cols="20" rows="2"></textarea>
+				</p>
+				<button style="margin-right: 1cm;" onclick="clearAll('calculator', 1)">清除</button>
+				<button id="calculatorCompute" style="margin-right: 1cm;">=</button>
+				<button id="calculatorCopyResult">复制结果</button>
+				<p>结果:</p>
+				<p>
+					<textarea name="result" cols="20" rows="10"></textarea>
+				</p>
+			</div>
+
+			<div style="margin-top:2cm;"></div>
+			<div id="circlePart">
+				<h2>圆等分</h2>
+				<p>圆直径(米):</p>
+				<p>
+					<input type="" name="diameter">
+				</p>
+				<p>等分数:</p>
+				<p>
+					<input type="" name="divide">
+				</p>
+				<p>
+					<button style="margin-right: 1cm;" onclick="clearAll('circlePart', 2)">清除</button>
+					<button id="circlePartCompute">=</button>
+				</p>
+				<p>割线长(米):</p>
+				<p>
+					<input type="" name="secant">
+				</p>
+			</div>
+
+			<div style="margin-top:2cm;"></div>
+			<div id="partAcc">
+				<h2>等分累加距离</h2>
+				<p>总长(米):</p>
+				<p>
+					<input type="" name="L">
+				</p>
+				<p>等分数:</p>
+				<p>
+					<input type="" name="n">
+				</p>
+				<button style="margin-right: 1cm;" onclick="clearAll('partAcc', 2)">清除</button>
+				<button id="partAccCompute">=</button>
+				<p>累加高度(米):</p>
+				<p>
+					<textarea name="accLength" cols="20" rows="10"></textarea>
+				</p>
+			</div>
+
+			<div style="margin-top:2cm;"></div>
+			<div id="degree">
+				<h2>三角形</h2>
+				<p>底边(米):</p>
+				<p>
+					<input type="" name="b">
+				</p>
+				<p>高(米):</p>
+				<p>
+					<input type="" name="h">
+				</p>
+				<p>斜边(米):</p>
+				<p>
+					<input type="" name="c">
+				</p>
+				<p>度数(°):</p>
+				<p>
+					<input type="" name="degree">
+				</p>
+				<button style="margin-right: 1cm;" onclick="clearAll('degree', 4)">清除</button>
+				<button id="degreeCompute">=</button>
+			</div>
+
+			<div style="margin-top:2cm;"></div>
+			<div id="side">
+				<h2>槽钢切割长度</h2>
+				<p>底边(米):</p>
+				<p>
+					<input type="" name="b">
+				</p>
+				<p>高(米):</p>
+				<p>
+					<input type="" name="h">
+				</p>
+				<p>槽钢宽(毫米):</p>
+				<p>
+					<input type="" name="w">
+				</p>
+				<p>
+					<button style="margin-right: 1cm;" onclick="clearAll('side', 3)">清除</button>
+					<button id="sideCompute">=</button>
+				</p>
+				<p>斜边(米):</p>
+				<p>
+					<input type="" name="c">
+				</p>
+				<p>柱子直边槽钢切割长度：直角(毫米):</p>
+				<p>
+					<input type="" name="top">
+				</p>
+				<p>地面平边槽钢切割长度：直角(毫米):</p>
+				<p>
+					<input type="" name="bottom">
+				</p>
+			</div>
+
+			<div style="margin-top:2cm;"></div>
+			<div id="circularCone">
+				<h2>圆台侧面</h2>
+				<p>上底面圆直径(米):</p>
+				<p>
+					<input type="" name="d1">
+				</p>
+				<p>下底面圆直径(米):</p>
+				<p>
+					<input type="" name="d2">
+				</p>
+				<p>中高(米):</p>
+				<p>
+					<input type="" name="h">
+				</p>
+				<button style="margin-right: 1cm;" onclick="clearAll('circularCone', 3)">清除</button>
+				<button id="circularConeCompute">=</button>
+
+				<p>从顶点到上底面距离(米):</p>
+				<p>
+					<input type="" name="h1">
+				</p>
+				<p>从顶点到下底面距离(米):</p>
+				<p>
+					<input type="" name="h2">
+				</p>
+				<p>从顶点到弧总长度(米):</p>
+				<p>
+					<input type="" name="hw">
+				</p>
+				<p>上底直角左(右)延伸距离(米):</p>
+				<p>
+					<input type="" name="h1r">
+				</p>
+				<p>下底直角左(右)延伸距离(米):</p>
+				<p>
+					<input type="" name="h2r">
+				</p>
+				<p>弧线长度(米):</p>
+				<p>
+					<input type="" name="radLength">
+				</p>
+
+			</div>
+
+			<div style="margin-top:2cm;"></div>
+			<div id="radianLength">
+				<h2>梁弧长</h2>
+				<p>梁长度(米):</p>
+				<p>
+					<input type="" name="a">
+				</p>
+				<p>中心抬高(米):</p>
+				<p>
+					<input type="" name="h">
+				</p>
+				<button style="margin-right: 1cm;" onclick="clearAll('radianLength', 2)">清除</button>
+				<button id="radianLengthCompute">=</button>
+				<p>梁弧长(米):</p>
+				<p>
+					<input type="" name="rad">
+				</p>
+			</div>
+
+			<div style="margin-top:2cm;"></div>
+			<div id="beamAverageHeight">
+				<h2>梁等分抬高</h2>
+				<p>梁长度一半(米):</p>
+				<p>
+					<input type="" name="a">
+				</p>
+				<p>中心抬高(米):</p>
+				<p>
+					<input type="" name="h">
+				</p>
+				<p>等分数:</p>
+				<p>
+					<input type="" name="averageNum">
+				</p>
+				<button style="margin-right: 1cm;" onclick="clearAll('beamAverageHeight', 3)">清除</button>
+				<button id="beamAverageHeightCompute">=</button>
+				<p>等分抬高距离(米):</p>
+				<p>
+					<textarea name="beamAverageHeightResult" cols="20" rows="10"></textarea>
+				</p>
+			</div>
+
+			<div style="margin-top:2cm;"></div>
+			<div id="corner">
+				<h2>转角拼接</h2>
+				<p>转角度数:</p>
+				<p>
+					<input type="" name="angle">
+				</p>
+				<p>转角内圆半径(米)(可以不填，默认圆柱直径1米取10公分):</p>
+				<p>
+					<input type="" name="InnerAngleR">
+				</p>
+				<p>材料圆柱直径(米):</p>
+				<p>
+					<input type="" name="D">
+				</p>
+				<p>转角拼接份数:</p>
+				<p>
+					<input type="" name="pinN">
+				</p>
+				<p>切割轨迹等分描点数量:</p>
+				<p>
+					<input type="" name="qieN">
+				</p>
+				<button style="margin-right: 1cm;" onclick="clearAll('corner', 5)">清除</button>
+				<button id="cornerCompute">=</button>
+				<p>单片描点高度(米):</p>
+				<p>
+					<textarea name="sketchH" cols="20" rows="10"></textarea>
+				</p>
+				<p>通体描点高度(米):</p>
+				<p>
+					<textarea name="allSketchH" cols="20" rows="20"></textarea>
+				</p>
+			</div>
+
+			<div style="margin-top:2cm;"></div>
+			<div id="snakeCorner">
+				<h2>蛇形转角拼接</h2>
+				<p>圆柱直径(米)</p>
+				<p>
+					<input type="" name="D">
+				</p>
+				<p>宽度(米)</p>
+				<p>
+					<input type="" name="width">
+				</p>
+				<p>高度(米), 两圆柱下边距离</p>
+				<p>
+					<input type="" name="height">
+				</p>
+				<p>转角拼接份数:</p>
+				<p>
+					<input type="" name="pinN">
+				</p>
+				<p>切割轨迹等分描点数量:</p>
+				<p>
+					<input type="" name="qieN">
+				</p>
+				<button style="margin-right: 1cm;" onclick="clearAll('snakeCorner', 5)">清除</button>
+				<button id="snakeCornerCompute">=</button>
+				<p>通体描点高度(米):</p>
+				<p>
+					<textarea name="allSketchH" cols="20" rows="20"></textarea>
+				</p>
+			</div>
+
+			<div style="margin-top:2cm;"></div>
+			<div id="intersectingLine">
+				<h2>三通相贯线</h2>
+				<p>切割圆柱直径(米):</p>
+				<p>
+					<input type="" name="D1">
+				</p>
+				<p>切割圆柱厚度(毫米):</p>
+				<p>
+					<input type="" name="D1Thickness">
+				</p>
+				<p>对接圆柱直径(米):</p>
+				<p>
+					<input type="" name="D2">
+				</p>
+				<p>对接倾斜角度(°):</p>
+				<p>
+					<input type="" name="obliqueAngle">
+				</p>
+
+				<p>切割圆描点数量:</p>
+				<p>
+					<input type="" name="n">
+				</p>
+				<button style="margin-right: 1cm;" onclick="clearAll('intersectingLine', 3)">清除</button>
+				<button id="intersectingLineCompute">=</button>
+				<p>切割圆描点距离(米):</p>
+				<p>
+					<textarea name="allSketchLength" cols="20" rows="20"></textarea></p>
+				<p>对接圆柱打孔轨迹椭圆的半短轴(米)：</p>
+				<p>
+					<input type="" name="halfShortAxis">
+				</p>
+				<p>
+					对接圆柱打孔轨迹椭圆的半长轴(米)：
+				</p>
+				<p>
+					<input type="" name="halfLongAxis">
+				</p>
+				<p>
+					对接圆柱打孔轨迹椭圆的焦点与中心距离(米)：
+				</p>
+				<p>
+					<input type="" name="focusToCenter">
+				</p>
+			</div>
+		</div>
 	</div>
 
-	<div id="calculator">
-		<h2>计算器</h2>
-		<p>输入:</p>
-		<p>
-			<textarea name="input" cols="30" rows="2"></textarea>
-		</p>
-		<button style="margin-right: 1cm;" onclick="clearAll('calculator', 1)">清除</button>
-		<button id="calculatorCompute" style="margin-right: 1cm;">=</button>
-		<button id="calculatorCopyResult">复制结果</button>
-		<p>结果:</p>
-		<p>
-			<textarea name="result" cols="30" rows="10"></textarea>
-		</p>
-	</div>
 
-	<div style="margin-top:2cm;"></div>
-	<div id="circlePart">
-		<h2>圆等分</h2>
-		<p>圆直径(米):</p>
-		<p>
-			<input type="" name="diameter">
-		</p>
-		<p>等分数:</p>
-		<p>
-			<input type="" name="divide">
-		</p>
-		<p>
-			<button style="margin-right: 1cm;" onclick="clearAll('circlePart', 2)">清除</button>
-			<button id="circlePartCompute">=</button>
-		</p>
-		<p>割线长(米):</p>
-		<p>
-			<input type="" name="secant">
-		</p>
-	</div>
-
-	<div style="margin-top:2cm;"></div>
-	<div id="partAcc">
-		<h2>等分累加距离</h2>
-		<p>总长(米):</p>
-		<p>
-			<input type="" name="L">
-		</p>
-		<p>等分数:</p>
-		<p>
-			<input type="" name="n">
-		</p>
-		<button style="margin-right: 1cm;" onclick="clearAll('partAcc', 2)">清除</button>
-		<button id="partAccCompute">=</button>
-		<p>累加高度(米):</p>
-		<p>
-			<textarea name="accLength" cols="30" rows="10"></textarea>
-		</p>
-	</div>
-
-	<div style="margin-top:2cm;"></div>
-	<div id="degree">
-		<h2>三角形</h2>
-		<p>底边(米):</p>
-		<p>
-			<input type="" name="b">
-		</p>
-		<p>高(米):</p>
-		<p>
-			<input type="" name="h">
-		</p>
-		<p>斜边(米):</p>
-		<p>
-			<input type="" name="c">
-		</p>
-		<p>度数(°):</p>
-		<p>
-			<input type="" name="degree">
-		</p>
-		<button style="margin-right: 1cm;" onclick="clearAll('degree', 4)">清除</button>
-		<button id="degreeCompute">=</button>
-	</div>
-	<div style="margin-top:2cm;"></div>
-	<div id="side">
-		<h2>槽钢切割长度</h2>
-		<p>底边(米):</p>
-		<p>
-			<input type="" name="b">
-		</p>
-		<p>高(米):</p>
-		<p>
-			<input type="" name="h">
-		</p>
-		<p>槽钢宽(毫米):</p>
-		<p>
-			<input type="" name="w">
-		</p>
-		<p>
-			<button style="margin-right: 1cm;" onclick="clearAll('side', 3)">清除</button>
-			<button id="sideCompute">=</button>
-		</p>
-		<p>斜边(米):</p>
-		<p>
-			<input type="" name="c">
-		</p>
-		<p>柱子直边槽钢切割长度：直角(毫米):</p>
-		<p>
-			<input type="" name="top">
-		</p>
-		<p>地面平边槽钢切割长度：直角(毫米):</p>
-		<p>
-			<input type="" name="bottom">
-		</p>
-	</div>
-<!-- 	
-	<div style="margin-top:2cm;"></div>
-	<div id="stair">
-		<h2>楼梯</h2>
-		<p>宽(米):</p>
-		<p>
-			<input type="" name="bn">
-		</p>
-		<p>高(米):</p>
-		<p>
-			<input type="" name="hn">
-		</p>
-		<p>抬数:</p>
-		<p>
-			<input type="" name="n1">
-		</p>
-		<p>踏数:</p>
-		<p>
-			<input type="" name="n2">
-		</p>
-		<p>
-			<button style="margin-right: 1cm;" onclick="clearAll('stair', 4)">清除</button>
-			<button id="stairCompute">=</button>
-		</p>
-		<p>每一抬 宽度(毫米):</p>
-		<p>
-			<input type="" name="b">
-		</p>
-		<p>每一抬 高度(毫米):</p>
-		<p>
-			<input type="" name="h">
-		</p>
-	</div> -->
-
-	<div style="margin-top:2cm;"></div>
-	<div id="circularCone">
-		<h2>圆台侧面</h2>
-		<p>上底面圆直径(米):</p>
-		<p>
-			<input type="" name="d1">
-		</p>
-		<p>下底面圆直径(米):</p>
-		<p>
-			<input type="" name="d2">
-		</p>
-		<p>中高(米):</p>
-		<p>
-			<input type="" name="h">
-		</p>
-		<button style="margin-right: 1cm;" onclick="clearAll('circularCone', 3)">清除</button>
-		<button id="circularConeCompute">=</button>
-
-		<p>从顶点到上底面距离(米):</p>
-		<p>
-			<input type="" name="h1">
-		</p>
-		<p>从顶点到下底面距离(米):</p>
-		<p>
-			<input type="" name="h2">
-		</p>
-		<p>从顶点到弧总长度(米):</p>
-		<p>
-			<input type="" name="hw">
-		</p>
-		<p>上底直角左(右)延伸距离(米):</p>
-		<p>
-			<input type="" name="h1r">
-		</p>
-		<p>下底直角左(右)延伸距离(米):</p>
-		<p>
-			<input type="" name="h2r">
-		</p>
-		<p>弧线长度(米):</p>
-		<p>
-			<input type="" name="radLength">
-		</p>
-
-	</div>
-
-	<div style="margin-top:2cm;"></div>
-	<div id="radianLength">
-		<h2>梁弧长</h2>
-		<p>梁长度(米):</p>
-		<p>
-			<input type="" name="a">
-		</p>
-		<p>中心抬高(米):</p>
-		<p>
-			<input type="" name="h">
-		</p>
-		<button style="margin-right: 1cm;" onclick="clearAll('radianLength', 2)">清除</button>
-		<button id="radianLengthCompute">=</button>
-		<p>梁弧长(米):</p>
-		<p>
-			<input type="" name="rad">
-		</p>
-	</div>
-
-	<div style="margin-top:2cm;"></div>
-	<div id="beamAverageHeight">
-		<h2>梁等分抬高</h2>
-		<p>梁长度一半(米):</p>
-		<p>
-			<input type="" name="a">
-		</p>
-		<p>中心抬高(米):</p>
-		<p>
-			<input type="" name="h">
-		</p>
-		<p>等分数:</p>
-		<p>
-			<input type="" name="averageNum">
-		</p>
-		<button style="margin-right: 1cm;" onclick="clearAll('beamAverageHeight', 3)">清除</button>
-		<button id="beamAverageHeightCompute">=</button>
-		<p>等分抬高距离(米):</p>
-		<p>
-			<textarea name="beamAverageHeightResult" cols="30" rows="10"></textarea>
-		</p>
-	</div>
-
-	<div style="margin-top:2cm;"></div>
-	<div id="corner">
-		<h2>转角拼接</h2>
-		<p>转角度数:</p>
-		<p>
-			<input type="" name="angle">
-		</p>
-		<p>转角内圆半径(米)(可以不填，默认圆柱直径1米取10公分):</p>
-		<p>
-			<input type="" name="InnerAngleR">
-		</p>
-		<p>材料圆柱直径(米):</p>
-		<p>
-			<input type="" name="D">
-		</p>
-		<p>转角拼接份数:</p>
-		<p>
-			<input type="" name="pinN">
-		</p>
-		<p>切割轨迹等分描点数量:</p>
-		<p>
-			<input type="" name="qieN">
-		</p>
-		<button style="margin-right: 1cm;" onclick="clearAll('corner', 5)">清除</button>
-		<button id="cornerCompute">=</button>
-		<p>单片描点高度(米):</p>
-		<p>
-			<textarea name="sketchH" cols="30" rows="10"></textarea>
-		</p>
-		<p>通体描点高度(米):</p>
-		<p>
-			<textarea name="allSketchH" cols="30" rows="20"></textarea>
-		</p>
-	</div>
-
-	<div style="margin-top:2cm;"></div>
-	<div id="snakeCorner">
-		<h2>蛇形转角拼接</h2>
-		<p>圆柱直径(米)</p>
-		<p>
-			<input type="" name="D">
-		</p>
-		<p>宽度(米)</p>
-		<p>
-			<input type="" name="width">
-		</p>
-		<p>高度(米), 两圆柱下边距离</p>
-		<p>
-			<input type="" name="height">
-		</p>
-		<p>转角拼接份数:</p>
-		<p>
-			<input type="" name="pinN">
-		</p>
-		<p>切割轨迹等分描点数量:</p>
-		<p>
-			<input type="" name="qieN">
-		</p>
-		<button style="margin-right: 1cm;" onclick="clearAll('snakeCorner', 5)">清除</button>
-		<button id="snakeCornerCompute">=</button>
-		<p>通体描点高度(米):</p>
-		<p>
-			<textarea name="allSketchH" cols="30" rows="20"></textarea>
-		</p>
-	</div>
-
-	<div style="margin-top:2cm;"></div>
-	<div id="intersectingLine">
-		<h2>三通相贯线</h2>
-		<p>切割圆柱直径(米):</p>
-		<p>
-			<input type="" name="D1">
-		</p>
-		<p>切割圆柱厚度(毫米):</p>
-		<p>
-			<input type="" name="D1Thickness">
-		</p>
-		<p>对接圆柱直径(米):</p>
-		<p>
-			<input type="" name="D2">
-		</p>
-		<p>对接倾斜角度(°):</p>
-		<p>
-			<input type="" name="obliqueAngle">
-		</p>
-
-		<p>切割圆描点数量:</p>
-		<p>
-			<input type="" name="n">
-		</p>
-		<button style="margin-right: 1cm;" onclick="clearAll('intersectingLine', 3)">清除</button>
-		<button id="intersectingLineCompute">=</button>
-		<p>切割圆描点距离(米):</p>
-		<p>
-			<textarea name="allSketchLength" cols="30" rows="20"></textarea></p>
-		<p>对接圆柱打孔轨迹椭圆的半短轴(米)：</p>
-		<p>
-			<input type="" name="halfShortAxis">
-		</p>
-		<p>
-			对接圆柱打孔轨迹椭圆的半长轴(米)：
-		</p>
-		<p>
-			<input type="" name="halfLongAxis">
-		</p>
-		<p>
-			对接圆柱打孔轨迹椭圆的焦点与中心距离(米)：
-		</p>
-		<p>
-			<input type="" name="focusToCenter">
-		</p>
-	</div>
 
 	<script>
 		function clearAll(id, len) {
