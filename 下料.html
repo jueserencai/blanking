@@ -3959,8 +3959,8 @@
 						for (; i < len; i++) {
 							fn(
 								elems[i], key, raw ?
-									value :
-									value.call(elems[i], i, fn(elems[i], key))
+								value :
+								value.call(elems[i], i, fn(elems[i], key))
 							);
 						}
 					}
@@ -10390,17 +10390,18 @@
 			margin-bottom: 0.5cm;
 		} */
 
-		
-		#parent{
-			display:flex;
+
+		#parent {
+			display: flex;
 		}
-		#left{
+
+		#left {
 			float: left;
 			width: 3cm;
 			left: 0;
-			margin: 0;  
-			margin-left:10px;
-    		padding: 0;
+			margin: 0;
+			margin-left: 10px;
+			padding: 0;
 			/* flex:1; */
 
 			position: fixed;
@@ -10410,25 +10411,25 @@
 
 		#left ul,
 		#left li {
-			margin-left:0px;
+			margin-left: 0px;
 			margin-bottom: 0.5cm;
-			padding-left:0px;
+			padding-left: 0px;
 		}
 
-		#right{
+		#right {
 			/* flex:2; */
-			margin-left:3cm;
+			margin-left: 3cm;
 		}
 
-		input { 
-			font-size: 18px; 
-			font-family: "微软雅黑";
-		}
-		textarea { 
-			font-size: 18px; 
+		input {
+			font-size: 18px;
 			font-family: "微软雅黑";
 		}
 
+		textarea {
+			font-size: 18px;
+			font-family: "微软雅黑";
+		}
 	</style>
 
 	<meta name="viewport" content="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
@@ -10476,7 +10477,7 @@
 
 
 		<div id="right">
-				
+
 			<div id="calculator">
 				<h2>计算器</h2>
 				<p>输入:</p>
@@ -10610,25 +10611,33 @@
 				<p>
 					<input type="" name="h1">
 				</p>
-				<p>从顶点到下底面距离(米):</p>
-				<p>
-					<input type="" name="h2">
-				</p>
-				<p>从顶点到弧总长度(米):</p>
-				<p>
-					<input type="" name="hw">
-				</p>
 				<p>上底直角左(右)延伸距离(米):</p>
 				<p>
 					<input type="" name="h1r">
+				</p>
+				<p>从顶点到下底面距离(米):</p>
+				<p>
+					<input type="" name="h2">
 				</p>
 				<p>下底直角左(右)延伸距离(米):</p>
 				<p>
 					<input type="" name="h2r">
 				</p>
-				<p>弧线长度(米):</p>
+				<p>从顶点到弧总长度(米):</p>
+				<p>
+					<input type="" name="hw">
+				</p>
+				<p>圆台下底面周长(米):</p>
 				<p>
 					<input type="" name="radLength">
+				</p>
+				<p>圆台侧面积(平方米):</p>
+				<p>
+					<input type="" name="sideArea">
+				</p>
+				<p>圆台需要最大的下料数(平方米):</p>
+				<p>
+					<input type="" name="maxMaterial">
 				</p>
 
 			</div>
@@ -10769,7 +10778,8 @@
 				<button id="intersectingLineCompute">=</button>
 				<p>切割圆描点距离(米):</p>
 				<p>
-					<textarea name="allSketchLength" cols="20" rows="20"></textarea></p>
+					<textarea name="allSketchLength" cols="20" rows="20"></textarea>
+				</p>
 				<p>对接圆柱打孔轨迹椭圆的半短轴(米)：</p>
 				<p>
 					<input type="" name="halfShortAxis">
@@ -10794,14 +10804,14 @@
 
 	<script>
 		function clearAll(id, len) {
-			let i=0
+			let i = 0
 			let input = document.getElementById(id).getElementsByTagName('input');
-			for (; input.length>0 && i<len; i++) {
+			for (; input.length > 0 && i < len; i++) {
 				input[i].value = "";
 			}
 
 			input = document.getElementById(id).getElementsByTagName('textarea');
-			for (; input.length>0 && i<len; i++) {
+			for (; input.length > 0 && i < len; i++) {
 				input[i].value = "";
 			}
 		}
@@ -10883,7 +10893,7 @@
 				var acc = 0;
 				var interval = L.val() / n.val();
 				var res = "";
-				for (let index = 0, i = 1; index < n.val(); index++ , i++) {
+				for (let index = 0, i = 1; index < n.val(); index++, i++) {
 					acc += interval;
 					res += i.toString() + "-> " + acc.toFixed(4).toString() + "\n";
 				}
@@ -10914,22 +10924,43 @@
 				var h1r = div.find("input[name='h1r']");
 				var h2r = div.find("input[name='h2r']");
 				var radLength = div.find("input[name='radLength']");
+				var sideArea = div.find("input[name='sideArea']");
+				var maxMaterial = div.find("input[name='maxMaterial']");
 
 				var x = (d1.val() / (d2.val() - d1.val())) * h.val();
-				var l1 = Math.pow(Math.pow(x, 2) + Math.pow(d1.val() / 2, 2), 0.5);
-				var l2 = Math.pow(Math.pow(x + Number(h.val()), 2) + Math.pow(d2.val() / 2, 2), 0.5);
+				var l1 = Math.pow(Math.pow(x, 2) + Math.pow(d1.val() / 2, 2), 0.5); // 内圆半径
+				var l2 = Math.pow(Math.pow(x + Number(h.val()), 2) + Math.pow(d2.val() / 2, 2), 0.5); // 外圆半径
 				var radian = (Math.PI * d2.val() / l2);
+
+				// 圆台侧面积
+				var sideAreaVal = Math.PI * (Math.pow(l2, 2) - Math.pow(l1, 2)) * radian / (2 * Math.PI)
+				sideArea.val(sideAreaVal.toFixed(decimal));
+
 				if (radian > Math.PI) {
 					alert("由于圆台的顶角度数大于180°，所以下面计算的是需要裁剪删除的部分，最终保留下来的圆环才是下料使用的部分")
 					radian = 2 * Math.PI - radian;
+
+					// 下料数，下料按照包括整个圆环的长方形计算，长方形四个角需要切割
+					let materialsArea = (2 * l2) * (l2 + l2 * Math.cos(radian / 2));
+					maxMaterial.val(materialsArea.toFixed(decimal));
+				} else {
+					// 小于180度的情况，
+					// 下料数，
+					let materialsArea = (2 * l2 * Math.sin(radian / 2)) * (l2 - l1 * Math.cos(radian / 2));
+					maxMaterial.val(materialsArea.toFixed(decimal));
 				}
-				radian /= 2;
-				h1.val((l1 * Math.cos(radian)).toFixed(decimal));
-				h1r.val((l1 * Math.sin(radian)).toFixed(decimal));
-				h2.val((l2 * Math.cos(radian)).toFixed(decimal));
-				h2r.val((l2 * Math.sin(radian)).toFixed(decimal));
+
+				h1.val((l1 * Math.cos(radian / 2)).toFixed(decimal));
+				h1r.val((l1 * Math.sin(radian / 2)).toFixed(decimal));
+				h2.val((l2 * Math.cos(radian / 2)).toFixed(decimal));
+				h2r.val((l2 * Math.sin(radian / 2)).toFixed(decimal));
 				hw.val((l2).toFixed(decimal));
 				radLength.val((Math.PI * d2.val()).toFixed(decimal));
+
+
+				// var cuttingSectorArea= Math.PI* Math.pow(l2,2) * radian / (2*Math.PI); // 切割扇形面积
+				// var cutTriangleArea = (2*h2r.val()) * h2.val() / 2; // 切割三角形面积
+
 			});
 
 			$("#radianLengthCompute").bind("click", function () {
@@ -10950,7 +10981,7 @@
 				var averageNum = div.find("input[name='averageNum']");
 				var beamAverageHeightResult = div.find("textarea[name='beamAverageHeightResult']");
 
-				var r=(Math.pow(a.val(),2) + Math.pow(h.val(),2)) / (2*h.val())
+				var r = (Math.pow(a.val(), 2) + Math.pow(h.val(), 2)) / (2 * h.val())
 
 				var decimal = 4;
 				var averageLength = a.val() / averageNum.val();
@@ -10959,7 +10990,7 @@
 					let lengthFromLeft = i * averageLength;
 					let x = lengthFromLeft - a.val()
 					// let height = h.val() * Math.pow(Math.pow(a.val(), 2) - Math.pow(x, 2), 0.5) / a.val()
-					let height=Math.pow((Math.pow(r,2) - x*x),0.5) - (r-h.val())
+					let height = Math.pow((Math.pow(r, 2) - x * x), 0.5) - (r - h.val())
 					resString += i.toString()
 						+ "-> <"
 						+ (lengthFromLeft).toFixed(decimal).toString()
@@ -11052,7 +11083,7 @@
 				let onePinHeight = getOnePinPointHeight(height - D, D, angle, halfPinN + 1, qieN);
 				for (let index = 0, halfQieN = qieN / 2, cylinderCirculrAcc = 0, cylinderCirculrInterval = D * Math.PI / qieN;
 					index < onePinHeight.length;
-					index++ , cylinderCirculrAcc += cylinderCirculrInterval) {
+					index++, cylinderCirculrAcc += cylinderCirculrInterval) {
 					res += `${index} -> <${cylinderCirculrAcc.toFixed(decimal)}>: `;
 					let x1 = onePinHeight[index] * 2;
 					let x2 = onePinHeight[(index + halfQieN) % qieN] * 2;
@@ -11119,9 +11150,9 @@
 			});
 
 			// 计算字符串的运算结果
-			function calculateString(str){
+			function calculateString(str) {
 				return eval(str)
-			} 
+			}
 
 			$("#calculatorCompute").bind("click", function () {
 				let div = $("#calculator");
@@ -11130,9 +11161,9 @@
 
 				let resString = result.val()
 				// let currentResult= eval(input.val())
-				let currentResult= calculateString(input.val())
+				let currentResult = calculateString(input.val())
 
-				let currentResultString= input.val() + "\n=  " + currentResult.toString()
+				let currentResultString = input.val() + "\n=  " + currentResult.toString()
 
 				resString = currentResultString + "\n\n" + resString
 				result.val(resString);
@@ -11141,8 +11172,9 @@
 			// 复制结果
 			$("#calculatorCopyResult").bind("click", function () {
 				let input = $("#calculator").find("textarea[name='input']");
-				let result= calculateString(input.val());
-				result= result.toFixed(4).toString()
+				let result = calculateString(input.val());
+				result = result.toFixed(4).toString()
+				input.val(result)
 
 				let flag = copyText(result); //传递文本
 			})
@@ -11153,13 +11185,13 @@
 				document.body.appendChild(textarea);//添加元素
 				textarea.value = text;
 				textarea.focus();
-				if(textarea.setSelectionRange)
+				if (textarea.setSelectionRange)
 					textarea.setSelectionRange(0, textarea.value.length);//获取光标起始位置到结束位置
 				else
 					textarea.select();
 				try {
 					var flag = document.execCommand("copy");//执行复制
-				} catch(eo) {
+				} catch (eo) {
 					var flag = false;
 				}
 				document.body.removeChild(textarea);//删除元素
